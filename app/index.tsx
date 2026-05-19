@@ -1,6 +1,6 @@
 import { View, FlatList, Text, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Header from "../components/Header";
 import CardItem from "../components/CardItem";
@@ -8,11 +8,12 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import AnnouncementCard from "../components/AnnouncementCard";
 
 import { cards } from "../constants/cards";
-import { announcements } from "../constants/announcements";
+import { Announcement } from "../constants/announcements";
 import { fetchData } from "../services/api";
 import { homeStyles } from "../styles/homeStyles";
 
-function AnnouncementsSection() {
+function AnnouncementsSection({ items }: { items: Announcement[] }) {
+  if (items.length === 0) return null;
   return (
     <View style={homeStyles.announcementsSection}>
       <Text style={homeStyles.sectionTitle}>Announcements</Text>
@@ -21,7 +22,7 @@ function AnnouncementsSection() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={homeStyles.announcementsScroll}
       >
-        {announcements.map((item) => (
+        {items.map((item) => (
           <AnnouncementCard key={item.id} item={item} />
         ))}
       </ScrollView>
@@ -33,6 +34,13 @@ function AnnouncementsSection() {
 export default function HomeScreen() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+  useEffect(() => {
+    fetchData("/announcementData/announcement.json")
+      .then((res) => setAnnouncements(res.data ?? []))
+      .catch(() => {});
+  }, []);
 
   const handleCardPress = async (item: any) => {
     try {
@@ -64,7 +72,7 @@ export default function HomeScreen() {
         data={cards}
         numColumns={2}
         keyExtractor={(item) => item.id}
-        ListHeaderComponent={<AnnouncementsSection />}
+        ListHeaderComponent={<AnnouncementsSection items={announcements} />}
         renderItem={({ item }) => (
           <CardItem
             item={item}
