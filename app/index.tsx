@@ -39,7 +39,6 @@ export default function HomeScreen() {
       setLoading(true);
 
       const data = await fetchData(item.url);
-      console.log(data);
 
       router.push({
         pathname: item.route,

@@ -9,8 +9,8 @@ import {
   StyleSheet,
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
-
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from "expo-router";
+import { fetchData } from "../services/api";
 
 const COLORS = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#F4A261", "#96CEB4", "#C77DFF", "#FFB347"];
 
@@ -86,8 +86,8 @@ export default function LocationScreen() {
   }>();
 
   // Parse JSON data
-  const DATE_DATA = params.data
-    ? JSON.parse(params.data)
+  const DATE_DATA: { date: string; link: string }[] = params.data
+    ? JSON.parse(params.data).data ?? []
     : [];
 
 
@@ -99,10 +99,7 @@ export default function LocationScreen() {
       setLoading(true);
       setError(null);
       setData(null);
-      const res = await fetch(selected.link);
-      console.log(res);
-      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-      const json: LocationData = await res.json();
+      const json: LocationData = await fetchData(selected.link);
       setData(json);
     } catch (e: any) {
       setError(e.message ?? "Something went wrong");
