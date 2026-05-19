@@ -10,13 +10,7 @@ import {
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-const DATE_DATA = [
-  { date: "18th May 2026", link: "https://corsproxy.io/?https://glowing-tulumba-37e3d7.netlify.app/locationData/mobility_report.json" },
-  { date: "17th May 2026", link: "https://corsproxy.io/?https://glowing-tulumba-37e3d7.netlify.app/locationData/mobility_report.json" },
-  { date: "16th May 2026", link: "https://corsproxy.io/?https://glowing-tulumba-37e3d7.netlify.app/locationData/mobility_report.json" },
-  { date: "15th May 2026", link: "https://corsproxy.io/?https://glowing-tulumba-37e3d7.netlify.app/locationData/mobility_report.json" },
-  { date: "14th May 2026", link: "https://corsproxy.io/?https://glowing-tulumba-37e3d7.netlify.app/locationData/mobility_report.json" },
-];
+import { useLocalSearchParams } from 'expo-router';
 
 const COLORS = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#F4A261", "#96CEB4", "#C77DFF", "#FFB347"];
 
@@ -77,12 +71,26 @@ function PieChart({ data }: { data: Record<string, number> }) {
   );
 }
 
+
+
 export default function LocationScreen() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<LocationData | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const params = useLocalSearchParams<{
+    data?: string;
+    title?: string;
+  }>();
+
+  // Parse JSON data
+  const DATE_DATA = params.data
+    ? JSON.parse(params.data)
+    : [];
+
+
 
   const selected = DATE_DATA[selectedIndex];
 

@@ -30,7 +30,7 @@ export const cards = [
     id: "4",
     title: "Location",
     image: require("../assets/images/fitness.png"),
-    url: "https://api.jsonbin.io/v3/qs/6a0c48a56877513b27988df4",
+    url: "https://glowing-tulumba-37e3d7.netlify.app/locationData/locationMain.json",
     route: "/location",
     color: "#45B7D1",
   },
