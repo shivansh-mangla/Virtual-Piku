@@ -29,7 +29,7 @@ export const cards = [
   {
     id: "4",
     title: "Location",
-    image: require("../assets/images/fitness.png"),
+    image: require("../assets/images/location.png"),
     url: "/locationData/locationMain.json",
     route: "/location",
     color: "#45B7D1",
