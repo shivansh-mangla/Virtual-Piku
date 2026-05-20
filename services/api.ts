@@ -1,4 +1,4 @@
-const BASE_URL = "https://glowing-tulumba-37e3d7.netlify.app";
+const BASE_URL = "https://data-dump-3ce.pages.dev";
 
 export const fetchData = async (url: string) => {
   const fullUrl = url.startsWith("http") ? url : `${BASE_URL}${url}`;
